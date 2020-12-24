@@ -1,0 +1,571 @@
+
+     Mã Java
+          Mã hóa niềm đam mê của bạn
+  Trang chủ >Java SE
+Tìm hiểu IO Tệp Java:
+
+Đọc / Ghi tệp nhị phân
+
+Đọc / Ghi tệp văn bản
+
+Đọc tệp văn bản từng dòng
+
+Liệt kê các tệp và thư mục
+
+Sao chép tệp hoặc thư mục
+
+Đổi tên / Di chuyển tệp hoặc thư mục
+
+Dọn dẹp / Xóa thư mục
+
+Đọc đầu vào từ người dùng
+
+Cách sử dụng tệp RandomAccess
+
+DataInputStream và DataOutputStream
+
+FileInputStream và FileOutputStream
+
+FileReader và FileWriter
+
+Hướng dẫn sử dụng máy quét Java
+
+Ví dụ về tuần tự hóa Java
+
+Tại sao Serialization trong Java?
+
+Hiểu về ngoại hóa Java
+
+Đọc nội dung tệp Zip
+
+Giải nén tệp Zip
+
+Nén tệp thành Zip
+
+Nén thư mục thành Zip
+
+Cấu hình Đọc / Ghi
+
+Thực thi các lệnh hệ điều hành
+
+API dịch vụ xem tệp
+
+
+
+Cách đọc và ghi tệp nhị phân trong Java
+Viết bởi   Nam Hà Minh
+Cập nhật lần cuối vào ngày 28 tháng 7 năm 2019 |   In  E-mail
+
+
+Trong hướng dẫn IO tệp Java này, chúng tôi chỉ cho bạn cách đọc và ghi tệp nhị phân bằng cách sử dụng cả API I / O tệp kế thừa và API I / O tệp (NIO) mới. API kế thừa (các lớp trong gói java.io. * ) hoàn hảo để thao tác các hoạt động I / O nhị phân cấp thấp như đọc và ghi chính xác từng byte một, trong khi API NIO (các lớp trong java.nio. *  package) thuận tiện hơn cho việc đọc và ghi toàn bộ tệp cùng một lúc và tất nhiên, nhanh hơn API Tệp ​​I / O cũ.
+ 
+1. Tìm hiểu Luồng Byte
+Chúng tôi sử dụng các luồng byte để đọc và ghi dữ liệu ở định dạng nhị phân, chính xác là byte 8 bit. Tất cả các lớp luồng byte được giảm xuống từ các lớp trừu tượng InputStream  và OutputStream . Sơ đồ lớp sau mô tả các lớp chính trong API tệp I / O kế thừa được thiết kế để làm việc với tệp nhị phân:
+API luồng Byte
+Bạn có thể nhận thấy rằng các lớp này thực hiện AutoCloseable  giao diện, có nghĩa là chúng ta có thể sử dụng thử với các nguồn tài nguyên cấu trúc để đóng những con suối tự động.
+Ở trên cùng của cấu trúc phân cấp, lớp trừu tượng InputStream  xác định hai phương thức chính để đọc các byte từ một luồng đầu vào:
+read () :đọc một byte dữ liệu, trả về byte dưới dạng giá trị số nguyên. Trả về -1 nếu đến cuối tệp.
+read (byte []) :đọc một đoạn byte vào mảng byte được chỉ định, lên đến kích thước của mảng. Phương thức này trả về -1 nếu không có thêm dữ liệu hoặc đến cuối tệp.
+ 
+Tương tự, lớp trừu tượng OutputStream định nghĩa hai phương thức chính để ghi byte vào luồng đầu ra:
+write (int) :ghi byte được chỉ định vào luồng đầu ra.
+write (byte []) :ghi mảng byte được chỉ định vào luồng đầu ra.
+ 
+
+
+Di chuyển xuống, các lớp triển khai   FileInputStream  và FileOutputStream  dành cho việc đọc và ghi các luồng byte thô, một hoặc nhiều byte cùng một lúc. Trong khi đó, BufferedInputStream  và BufferedOutputStream  hiệu quả hơn bằng cách đệm luồng đầu vào và luồng đầu ra để giảm số lượng lệnh gọi đến API gốc.
+Bây giờ, chúng ta hãy xem một số ví dụ về mã.
+ 
+2. Đọc và ghi tệp nhị phân bằng FileInputStream và FileOutputStream
+Các ví dụ sau đây sử dụng các lớp FileInputStream  và FileOutputStream  để thực hiện I / O nhị phân mức thấp.
+Chương trình này sao chép tệp này sang tệp khác, mỗi lần một byte. Tệp nguồn và tệp đích được cung cấp từ các đối số của dòng lệnh:
+1
+2
+3
+4
+5
+6
+7
+số 8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+import java.io.*;
+ 
+/**
+ * Copy one file to another using low level byte streams, one byte at a time.
+ * @author www.codejava.net
+ */
+public class CopyFiles {
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Please provide input and output files");
+            System.exit(0);
+        }
+ 
+        String inputFile = args[0];
+        String outputFile = args[1];
+ 
+ 
+        try (
+            InputStream inputStream = new FileInputStream(inputFile);
+            OutputStream outputStream = new FileOutputStream(outputFile);
+        ) {
+ 
+            int byteRead;
+ 
+            while ((byteRead = inputStream.read()) != -1) {
+                outputStream.write(byteRead);
+            }
+ 
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+Chạy chương trình này như thế này:
+1
+java CopyFiles Project.zip Project1(1).zip
+Chương trình này chạy rất chậm vì nó sao chép chính xác từng byte một.
+ 
+Và chương trình sau chạy nhanh hơn vì nó đọc toàn bộ tệp đầu vào thành một mảng byte và sau đó ghi toàn bộ mảng byte vào tệp đầu ra:
+1
+2
+3
+4
+5
+6
+7
+số 8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+import java.io.*;
+ 
+/**
+ * Copy one file to another using low level byte streams,
+ * read and write a whole.at once.
+ * @author www.codejava.net
+ */
+public class CopyFilesOne {
+ 
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Please provide input and output files");
+            System.exit(0);
+        }
+ 
+        String inputFile = args[0];
+        String outputFile = args[1];
+ 
+ 
+        try (
+            InputStream inputStream = new FileInputStream(inputFile);
+            OutputStream outputStream = new FileOutputStream(outputFile);
+        ) {
+ 
+            long fileSize = new File(inputFile).length();
+ 
+            byte[] allBytes = new byte[(int) fileSize];
+ 
+            inputStream.read(allBytes);
+ 
+            outputStream.write(allBytes);
+ 
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+ 
+Và chương trình sau chạy nhanh hơn nhiều bằng cách sao chép một đoạn byte tại một thời điểm (chính xác 4096 byte tại một thời điểm):
+1
+2
+3
+4
+5
+6
+7
+số 8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+import java.io.*;
+ 
+/**
+ * Copy one file to another using low level byte streams, 4KB at a time.
+ * @author www.codejava.net
+ */
+public class CopyFilesChunk {
+    private static final int BUFFER_SIZE = 4096; // 4KB
+ 
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Please provide input and output files");
+            System.exit(0);
+        }
+ 
+        String inputFile = args[0];
+        String outputFile = args[1];
+ 
+ 
+        try (
+            InputStream inputStream = new FileInputStream(inputFile);
+            OutputStream outputStream = new FileOutputStream(outputFile);
+        ) {
+ 
+            byte[] buffer = new byte[BUFFER_SIZE];
+ 
+            while (inputStream.read(buffer) != -1) {
+                outputStream.write(buffer);
+            }
+ 
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+ 
+Chương trình sau đây đọc 8 byte đầu tiên của tệp để xác định xem đó có phải là định dạng ảnh PNG hay không:
+1
+2
+3
+4
+5
+6
+7
+số 8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+import java.io.*;
+ 
+ 
+/**
+ * This program checks whether a file is of PNG image format or not,
+ * by analysing its first 8 bytes.
+ * @author www.codejava.net
+ */
+public class CheckPNG {
+    private static int[] pngSignature = {137, 80, 78, 71, 13, 10, 26, 10};
+ 
+    public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("Please provide the input file");
+            System.exit(0);
+        }
+ 
+        String inputFile = args[0];
+ 
+        try (
+            InputStream inputStream = new FileInputStream(inputFile);
+        ) {
+            int[] headerBytes = new int[8];
+ 
+            boolean isPNG = true;
+ 
+            for (int i = 0; i < 8; i++) {
+                headerBytes[i] = inputStream.read();
+                if (headerBytes[i] != pngSignature[i]) {
+                    isPNG = false;
+                    break;
+                }
+            }
+ 
+            System.out.println("Is PNG file? " + isPNG);
+ 
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+ 
+    }
+}
+Chạy chương trình này như thế này:
+1
+java CheckPNG Diagram.png
+Nếu tệp thực sự là một hình ảnh PNG, nó sẽ in ra đầu ra: Có phải tệp PNG không? thật
+Như bạn có thể thấy, việc sử dụng FileInputStream  và FileOutputStream  thực sự tốt cho các I / O nhị phân cấp thấp như phân tích tệp hoặc thậm chí tạo định dạng tệp của riêng bạn.
+ 
+3. Đọc và ghi tệp nhị phân bằng BufferedInputStream và BufferedOutputStream
+Việc sử dụng BufferedInputStream  và  BufferedOutputStream  cũng giống như FileInputStream  và FileOutputStream . Sự khác biệt duy nhất là luồng được đệm sử dụng một mảng byte bên trong để đệm đầu vào và đầu ra nhằm giảm số lượng lệnh gọi đến API gốc, do đó tăng hiệu suất IO.
+Theo mặc định, cả BufferedInputStream  và BufferedOutputStream  đều có bộ đệm bên trong 8192 byte (8KB), nhưng chúng ta có thể chỉ định kích thước bộ đệm tùy chỉnh khi khởi tạo.
+Tất cả các ví dụ trên có thể được viết lại bằng cách sử dụng các luồng được đệm chỉ bằng cách thay đổi cách khởi tạo của các luồng. Đây là một ví dụ:
+1
+2
+3
+4
+5
+6
+7
+số 8
+9
+10
+11
+12
+13
+14
+try (
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(inputFile));
+        OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
+) {
+ 
+    byte[] buffer = new byte[BUFFER_SIZE];
+ 
+    while (inputStream.read(buffer) != -1) {
+    outputStream.write(buffer);
+    }
+ 
+} catch (IOException ex) {
+        ex.printStackTrace();
+}
+Và chúng tôi có thể chỉ định kích thước tùy chỉnh cho bộ đệm như thế này:
+1
+2
+3
+4
+5
+6
+int bufferSize = 16384; // 16KB buffer size
+InputStream inputStream
+    = new BufferedInputStream(new FileInputStream(inputFile), bufferSize);
+ 
+OutputStream outputStream
+    = new BufferedOutputStream(new FileOutputStream(outputFile), bufferSize);
+ 
+4. Đọc và ghi tệp nhị phân bằng API I / O tệp mới (NIO)
+Lớp tiện ích Tệp  trong gói java.nio.file  cung cấp các phương thức sau để đọc và ghi dữ liệu nhị phân:
+readAllBytes (Đường dẫn đường dẫn) :đọc tất cả các byte từ một tệp và trả về một mảng byte. Phương pháp này dùng để đọc các tệp nhỏ, không phải tệp lớn.
+write (Tùy chọn đường dẫn đường dẫn, byte [] byte, OpenOption ...) :ghi một mảng byte vào tệp với một số tùy chọn hữu ích như CREATE, TRUNCATE_EXISTING, WRITE và APPEND.
+Lưu ý rằng cả hai phương thức đều đóng tệp đầu vào và đầu ra sau khi thực hiện xong và ném IOException  trong trường hợp lỗi.
+Hãy xem một ví dụ. Chương trình sao chép tệp ở trên có thể được viết lại bằng NIO API như sau:
+1
+2
+3
+4
+5
+6
+7
+số 8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+import java.io.*;
+import java.nio.file.*;
+ 
+/**
+ * Copy one file to another using low level byte streams, one byte at a time.
+ * @author www.codejava.net
+ */
+public class CopyFilesNIO {
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Please provide input and output files");
+            System.exit(0);
+        }
+ 
+        String inputFile = args[0];
+        String outputFile = args[1];
+ 
+ 
+        try {
+            long start = System.currentTimeMillis();
+ 
+            byte[] allBytes = Files.readAllBytes(Paths.get(inputFile));
+            Files.write(Paths.get(outputFile), allBytes);
+ 
+            long end = System.currentTimeMillis();
+            System.out.println("Copied in " + (end - start) + " ms");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+Hãy thử chạy chương trình này và so sánh thời gian với những chương trình sử dụng I / O Tệp cũ (trên các tệp lớn), bạn sẽ thấy NIO hoạt động nhanh hơn nhiều.
+ 
+Tham chiếu API:
+InputStream Javadoc
+OutputStream Javadoc
+FileInputStream Javadoc
+FileOutputStream Javadoc
+Tệp Javadoc
+Đường dẫn Javadoc
+ 
+Hướng dẫn IO về Tệp Liên quan:
+Cách đọc và ghi tệp văn bản trong Java
+Cách đọc tệp văn bản từng dòng trong Java
+Ví dụ về Java IO FileInputStream và FileOutputStream
+ 
+Các hướng dẫn IO về Tệp Java khác:
+Cách liệt kê các tệp và thư mục trong một thư mục trong Java
+Java IO - Ví dụ về hoạt động tệp và thư mục phổ biến
+Ví dụ cơ bản về tuần tự hóa Java
+Hiểu về ngoại hóa Java với các ví dụ
+Cách thực thi các lệnh hệ điều hành trong Java
+3 cách để đọc đầu vào của người dùng từ bảng điều khiển trong Java
+Ví dụ về thông báo thay đổi tệp với API dịch vụ của Watch
+Hướng dẫn sử dụng máy quét Java và ví dụ về mã
+
+Giới thiệu về tác giả:
+Nam Ha Minh được cấp chứng chỉ lập trình viên Java (SCJP và SCWCD). Anh bắt đầu lập trình với Java từ thời Java 1.4 và bắt đầu yêu Java kể từ đó. Kết bạn với anh ấy trên Facebook và xem các video Java của anh ấy trên YouTube.
+
+
+
+Tệp đính kèm:
+Tải xuống tệp này (JavaBinaryFileIOExamples.zip)JavaBinaryFileIOExamples.zip	[Ví dụ về IO tệp nhị phân Java]	4 kB
+Thêm bình luận
+Tên
+     
+E-mail
+
+bình luận
+
+Báo cho tôi biết khi có comment mới
+
+
+
+Gửi
+Bình luận 
+# 2 Adrian Gibanel bTact 2019-10-08 04:34
+Chương trình: "Và chương trình sau chạy nhanh hơn nhiều bằng cách sao chép một đoạn byte tại một thời điểm (chính xác 4096 byte tại một thời điểm):" khi đưa vào một tệp có kích thước 169KB, nó sẽ xuất ra tệp có kích thước 172KB.
+
+Có vẻ như đây không phải là cách rất chính xác để sao chép tệp.
+
+Sẽ rất tuyệt nếu bạn có thể lưu ý rằng không phải mọi kích thước tệp đều là bội số 4096.
+
+Cảm ơn bạn.
+Trích dẫn
+# 1 Vishnu Prathap 2018-11-25 22:27
+Rất hữu ích và hữu ích
+Trích dẫn
+Làm mới danh sách nhận xét
+Xem Tất cả Hướng dẫn về Java
+
+CodeJava.net chia sẻ các hướng dẫn về Java, các ví dụ về mã và các dự án mẫu cho các lập trình viên ở mọi cấp độ.
+CodeJava.net do Nam Ha Minh - một lập trình viên đam mê lập trìnhtạo ra và quản lý.
+
+Trang chủ   Giới thiệu về   Liên hệ   Điều khoản sử dụng   Chính sách bảo mật   F acebook   T Witter  Y ouTube 
+
+Bản quyền © 2012-2020 CodeJava.net, mọi quyền được bảo lưu.

@@ -1,0 +1,22 @@
+v
+Loại bản dịch
+Dịch văn bản
+
+PHÁT HIỆN NGÔN NGỮ
+
+ANH
+
+VIỆT
+
+PHÁP
+
+VIỆT
+
+ANH
+
+TRUNG (GIẢN THỂ)
+Văn bản nguồn
+Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+95 / 5000
+Kết quả dịch
+Chia sẻ chỉ được hỗ trợ cho các lớp trình tải khởi động vì đường dẫn khởi động bootstrap đã được thêm vào
