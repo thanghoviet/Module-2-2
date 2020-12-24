@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class ManafingTraineesTest {
-        Scanner scanner = new Scanner(System.in);
+         static Scanner scanner = new Scanner(System.in);
         ManagingTrainees check = new ManagingTrainees();
     public void manager() throws IOException, ClassNotFoundException {
         int choice;
         do {
             check.Menu();
-            choice = scanner.nextInt();
+            choice = getFormatChoice();
             switch (choice) {
                 case 1:
                     check.listOfStudents();
@@ -41,6 +41,16 @@ public class ManafingTraineesTest {
                             "Bam nut theo menu de tiep tuc giao dich");
             }
         } while (true);
+    }
+
+    public static int getFormatChoice(){
+        String choice= scanner.nextLine();
+        try{
+            return Integer.parseInt(choice);
+        }catch (Exception e){
+            System.out.println("Chon lai");
+            return getFormatChoice();
+        }
     }
 
     public void suaDiem() throws IOException, ClassNotFoundException {

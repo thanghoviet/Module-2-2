@@ -184,23 +184,19 @@ public class ManagingTrainees {
             int fineid = Integer.parseInt(sc.nextLine());
 
             for (Student student : studentTables.values()) {
-                if (student.getTongdiem() == -1) {
+                if (fineid == student.getId() &&student.getTongdiem() == -1.0) {
                     System.out.println("sinh viên chưa được nhập hết điểm");
                     enterScores();
                 }
-                if (fineid == student.getId() && student.getTongdiem() != -1) {
+                if (fineid == student.getId() && student.getTongdiem() != -1.0) {
                     editScoresrun(student);
-
-                    studentTables.put(student.getId(), student);
-                    ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
-                    saved.writeObject(studentTables);
                     check = true;
+                }
                 }
                 if (check == false) {
                     System.out.println("Bạn đã nhập sai id hoặc không có id này trong danh sách");
                     System.out.println("Vui lòng nhập lại id");
                     enterScores();
-                }
             }
 
         } catch (Exception e) {
@@ -377,8 +373,11 @@ public class ManagingTrainees {
             student.setDiemhs1thu1(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs1thu1() >= 0 && student.getDiemhs1thu1() <= 10) {
                 student.tinhTrungbinhDiem();
-                editScoresrun(student);
+                studentTables.put(student.getId(), student);
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                saved.writeObject(studentTables);
                 System.out.println("Sửa điểm thành công");
+                editScoresrun(student);
             }else{
                 System.out.println("không được nhập số âm hoặc vượt quá 10 điểm");
                 editScores1(student);
@@ -393,8 +392,11 @@ public class ManagingTrainees {
             student.setDiemhs1thu2(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs1thu2() >= 0 && student.getDiemhs1thu2() <= 10) {
                 student.tinhTrungbinhDiem();
-                editScoresrun(student);
+                studentTables.put(student.getId(), student);
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                saved.writeObject(studentTables);
                 System.out.println("Sửa điểm thành công");
+                editScoresrun(student);
             }else{
                 System.out.println("không được nhập số âm hoặc vượt quá 10 điểm");
                 editScores2(student);
@@ -408,8 +410,11 @@ public class ManagingTrainees {
             student.setDiemhs2(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs2() >= 0 && student.getDiemhs2() <= 10) {
             student.tinhTrungbinhDiem();
-            editScoresrun(student);
+                studentTables.put(student.getId(), student);
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                saved.writeObject(studentTables);
                 System.out.println("Sửa điểm thành công");
+            editScoresrun(student);
             }else{
                 System.out.println("không được nhập số âm hoặc vượt quá 10 điểm");
                 editScores3(student);
@@ -423,8 +428,11 @@ public class ManagingTrainees {
             student.setDiemhs3(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs3() >= 0 && student.getDiemhs3() <= 10) {
             student.tinhTrungbinhDiem();
-                editScoresrun(student);
+                studentTables.put(student.getId(), student);
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                saved.writeObject(studentTables);
                 System.out.println("Sửa điểm thành công");
+                editScoresrun(student);
             }else{
                 System.out.println("không được nhập số âm hoặc vượt quá 10 điểm");
                 editScores4(student);
