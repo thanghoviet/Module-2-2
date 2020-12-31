@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class AppExplore {
     Scanner scanner = new Scanner(System.in);
-    File fileOrDir = new File("C:\\Baitap");
+    File fileOrDir = new File("C:\\Baitap\\");
     Menu menu = new Menu();
     ShowMyFiles dir = new ShowMyFiles();
     SearchMyFiles search = new SearchMyFiles();

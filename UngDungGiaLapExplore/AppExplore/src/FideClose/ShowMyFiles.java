@@ -8,6 +8,7 @@ public class ShowMyFiles {
 
      void traverseDepthFiles(File fileOrDir) {
         if (fileOrDir.isDirectory()){
+
             System.out.println(fileOrDir.getAbsolutePath());
             final File[] children = fileOrDir.listFiles();
             if (children==null){

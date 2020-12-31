@@ -1,24 +1,29 @@
 package FideClose;
 
-import java.io.File;
+import java.io.*;
 import java.util.Scanner;
 
 public class SearchMyFiles {
+
     public void searchMyFiles() {
         Scanner scanner = new Scanner(System.in);
         try {
-            System.out.println("Nhập tên file bạn muốn tìm 'Ex: file.txt'");
-            String search = scanner.nextLine();
+            System.out.println("Nhập tên file bạn muốn tìm");
+            String search = scanner.nextLine().trim();
             File file = new File("C:\\Baitap\\" + search);
-            if (file == null) {
-                System.out.println("Ko tìm thấy file");
+            if (file.exists()) {
+                System.out.println(file.getAbsolutePath());
                 return;
             } else {
-                System.out.println(file.getAbsolutePath());
+                System.out.println("file ko tồn tại");
             }
         } catch (Exception e) {
             e.printStackTrace();
             searchMyFiles();
         }
     }
+
 }
+
+
+

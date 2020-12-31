@@ -7,7 +7,7 @@ public class MovieMyFiles {
     public void movieMyFiles(){
         Scanner scanner = new Scanner(System.in);
         try {
-            System.out.println("Nhập tên file bạn muốn movie 'Ex: file.txt'");
+            System.out.println("Nhập tên file bạn muốn movie");
             String deleteFiles = scanner.nextLine();
             File file = new File("C:\\Baitap\\"+deleteFiles);
             if (file.renameTo(new File("C:\\Baitap2\\"+file.getName()))){

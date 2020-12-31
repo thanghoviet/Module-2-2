@@ -7,7 +7,7 @@ public class DeleteMyFiles {
     public void deleteMyFiles() {
         Scanner scanner = new Scanner(System.in);
         try {
-            System.out.println("Nhập tên file bạn muốn xóa 'Ex: file.txt'");
+            System.out.println("Nhập tên file bạn muốn xóa");
             String deleteFiles = scanner.nextLine();
             File file = new File("C:\\Baitap\\" + deleteFiles);
             if (file.delete()) {

@@ -10,7 +10,7 @@ public class CopyMyFiles {
 
     public void copyFiles() throws IOException {
         try {
-            System.out.println("Nhập tên file bạn muốn copy 'Ex: file.txt'");
+            System.out.println("Nhập tên file bạn muốn copy");
             String copy = scanner.nextLine();
             inStream = new FileInputStream(new File("C:\\Baitap\\" + copy));
             outStream = new FileOutputStream(new File("C:\\Baitap\\" + copy + "copy"));
