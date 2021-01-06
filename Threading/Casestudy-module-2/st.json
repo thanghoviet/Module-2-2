@@ -1,0 +1,46 @@
+{
+  "1": {
+    "id": 1,
+    "name": "da",
+    "birthday": "02/02/2000",
+    "sex": "nam",
+    "point15Minutes": 7.0,
+    "oralTestScores": 6.0,
+    "HourTestScore": 6.0,
+    "semesterTestScores": 9.0,
+    "GPA": 7.428571428571429
+  },
+  "2": {
+    "id": 2,
+    "name": "ka",
+    "birthday": "05/05/2000",
+    "sex": "nữ",
+    "point15Minutes": 8.0,
+    "oralTestScores": 9.0,
+    "HourTestScore": 8.0,
+    "semesterTestScores": 9.9,
+    "GPA": 8.957142857142857
+  },
+  "1899": {
+    "id": 1899,
+    "name": "thang",
+    "birthday": "12/12/2000",
+    "sex": "nam",
+    "point15Minutes": 9.0,
+    "oralTestScores": 6.0,
+    "HourTestScore": 8.0,
+    "semesterTestScores": 9.0,
+    "GPA": 8.285714285714286
+  },
+  "19999": {
+    "id": 19999,
+    "name": "hai",
+    "birthday": "12/12/2000",
+    "sex": "nam",
+    "point15Minutes": 8.0,
+    "oralTestScores": 7.0,
+    "HourTestScore": 8.0,
+    "semesterTestScores": 8.0,
+    "GPA": 7.857142857142857
+  }
+}

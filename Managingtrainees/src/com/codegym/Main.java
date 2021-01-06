@@ -1,4 +1,4 @@
-package menu;
+package com.codegym;
 
 import java.io.IOException;
 

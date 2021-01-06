@@ -1,4 +1,4 @@
-package menu;
+package com.codegym;
 
 import java.io.*;
 import java.util.*;
@@ -9,7 +9,7 @@ public class ManagingTrainees {
 
     //try catch
     {
-        try (ObjectInputStream read = new ObjectInputStream(new FileInputStream("Student.dat"))) {
+        try (ObjectInputStream read = new ObjectInputStream(new FileInputStream("Student.json"))) {
             Object testFile = read.readObject();
             studentTables = (HashMap<Integer, Student>) testFile;
         } catch (Exception e) {
@@ -25,13 +25,14 @@ public class ManagingTrainees {
         System.out.println("5. Nhập điểm học viên");
         System.out.println("6. Sửa nhập điểm học viên");
         System.out.println("7. Xếp loại học viên " +
-                "(hiển thị danh sách học viên theo điểm từ cao đến thấp)");
+                "(hiển thị danh sách học viên theo điểm tb từ cao đến thấp)");
         System.out.println("Nhập 0 để thoát");
         System.out.println("Nhập lựa chọn của bạn:  ");
     }
 
 
     public void listOfStudents() {
+
         System.out.format("||%-5s | ", "id");
         System.out.format("%-25s | ", "name");
         System.out.format("%-8s | ", "Điểm hs1");
@@ -43,11 +44,11 @@ public class ManagingTrainees {
         for (Student student : studentTables.values()) {
             System.out.format("||%-5d | ", student.getId());
             System.out.format("%-25s | ", student.getName());
-            System.out.format("%-8.1f | ", student.getDiemhs1thu1());
-            System.out.format("%-8.1f | ", student.getDiemhs1thu2());
-            System.out.format("%-8.1f | ", student.getDiemhs2());
-            System.out.format("%-8.1f | ", student.getDiemhs3());
-            System.out.format("%-7.1f || \n", student.getTongdiem());
+            System.out.format("%-8.2f | ", student.getDiemhs1thu1());
+            System.out.format("%-8.2f | ", student.getDiemhs1thu2());
+            System.out.format("%-8.2f | ", student.getDiemhs2());
+            System.out.format("%-8.2f | ", student.getDiemhs3());
+            System.out.format("%-7.2f || \n", student.getTongdiem());
         }
     }
 
@@ -87,7 +88,7 @@ public class ManagingTrainees {
             }
         } while (checkk != true);
         studentTables.put(student.getId(), student);
-        ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+        ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
         saved.writeObject(studentTables);
 
     }
@@ -114,7 +115,7 @@ public class ManagingTrainees {
                         System.out.println("Nhập lại tuổi sinh viên:");
                         student.setAge(Integer.parseInt(sc.nextLine()));
                         studentTables.put(student.getId(), student);
-                        ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                        ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
                         saved.writeObject(studentTables);
                         check = true;
                     }
@@ -192,11 +193,11 @@ public class ManagingTrainees {
                     editScoresrun(student);
                     check = true;
                 }
-                }
-                if (check == false) {
-                    System.out.println("Bạn đã nhập sai id hoặc không có id này trong danh sách");
-                    System.out.println("Vui lòng nhập lại id");
-                    enterScores();
+            }
+            if (check == false) {
+                System.out.println("Bạn đã nhập sai id hoặc không có id này trong danh sách");
+                System.out.println("Vui lòng nhập lại id");
+                enterScores();
             }
 
         } catch (Exception e) {
@@ -207,7 +208,7 @@ public class ManagingTrainees {
     }
 
     public void graded() throws IOException, ClassNotFoundException {
-        ObjectInputStream readding = new ObjectInputStream(new FileInputStream("Student.dat"));
+        ObjectInputStream readding = new ObjectInputStream(new FileInputStream("Student.json"));
         Object testFile = readding.readObject();
         HashMap<Integer, Student> studentTabless = (HashMap<Integer, Student>) testFile;
         List<Student> list = new ArrayList<Student>(studentTabless.values());
@@ -270,7 +271,7 @@ public class ManagingTrainees {
         student.tinhTrungbinhDiem();
         if (student.getTongdiem() != -1) {
             studentTables.put(student.getId(), student);
-            ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+            ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
             saved.writeObject(studentTables);
         }
     }
@@ -286,7 +287,7 @@ public class ManagingTrainees {
             student.setDiemhs1thu1(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs1thu1() >= 0 && student.getDiemhs1thu1() <= 10) {
                 studentTables.put(student.getId(), student);
-                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
                 saved.writeObject(studentTables);
                 System.out.println("Đã thêm điểm thành công");
                 tinhTrungBinh(student);
@@ -304,7 +305,7 @@ public class ManagingTrainees {
             student.setDiemhs1thu2(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs1thu2() >= 0 && student.getDiemhs1thu2() <= 10) {
                 studentTables.put(student.getId(), student);
-                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
                 saved.writeObject(studentTables);
                 System.out.println("Đã thêm điểm thành công");
                 tinhTrungBinh(student);
@@ -327,7 +328,7 @@ public class ManagingTrainees {
             student.setDiemhs2(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs2() >= 0 && student.getDiemhs2() <= 10) {
                 studentTables.put(student.getId(), student);
-                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
                 saved.writeObject(studentTables);
                 System.out.println("Đã thêm điểm thành công");
                 tinhTrungBinh(student);
@@ -350,7 +351,7 @@ public class ManagingTrainees {
             student.setDiemhs3(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs3() >= 0 && student.getDiemhs3() <= 10) {
                 studentTables.put(student.getId(), student);
-                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
                 saved.writeObject(studentTables);
                 System.out.println("Đã thêm điểm thành công");
                 tinhTrungBinh(student);
@@ -374,7 +375,7 @@ public class ManagingTrainees {
             if (student.getDiemhs1thu1() >= 0 && student.getDiemhs1thu1() <= 10) {
                 student.tinhTrungbinhDiem();
                 studentTables.put(student.getId(), student);
-                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
                 saved.writeObject(studentTables);
                 System.out.println("Sửa điểm thành công");
                 editScoresrun(student);
@@ -393,7 +394,7 @@ public class ManagingTrainees {
             if (student.getDiemhs1thu2() >= 0 && student.getDiemhs1thu2() <= 10) {
                 student.tinhTrungbinhDiem();
                 studentTables.put(student.getId(), student);
-                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
                 saved.writeObject(studentTables);
                 System.out.println("Sửa điểm thành công");
                 editScoresrun(student);
@@ -409,12 +410,12 @@ public class ManagingTrainees {
             System.out.println("Nhập điểm hệ số 2:");
             student.setDiemhs2(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs2() >= 0 && student.getDiemhs2() <= 10) {
-            student.tinhTrungbinhDiem();
+                student.tinhTrungbinhDiem();
                 studentTables.put(student.getId(), student);
-                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
                 saved.writeObject(studentTables);
                 System.out.println("Sửa điểm thành công");
-            editScoresrun(student);
+                editScoresrun(student);
             }else{
                 System.out.println("không được nhập số âm hoặc vượt quá 10 điểm");
                 editScores3(student);
@@ -427,9 +428,9 @@ public class ManagingTrainees {
             System.out.println("Nhập điểm hệ số 3:");
             student.setDiemhs3(Double.parseDouble(sc.nextLine()));
             if (student.getDiemhs3() >= 0 && student.getDiemhs3() <= 10) {
-            student.tinhTrungbinhDiem();
+                student.tinhTrungbinhDiem();
                 studentTables.put(student.getId(), student);
-                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.dat"));
+                ObjectOutputStream saved = new ObjectOutputStream(new FileOutputStream("Student.json"));
                 saved.writeObject(studentTables);
                 System.out.println("Sửa điểm thành công");
                 editScoresrun(student);

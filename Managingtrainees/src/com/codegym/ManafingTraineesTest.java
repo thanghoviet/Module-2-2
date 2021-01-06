@@ -1,12 +1,11 @@
-package menu;
-//Stringformat
+package com.codegym;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class ManafingTraineesTest {
-         static Scanner scanner = new Scanner(System.in);
-        ManagingTrainees check = new ManagingTrainees();
+    static Scanner scanner = new Scanner(System.in);
+    ManagingTrainees check = new ManagingTrainees();
     public void manager() throws IOException, ClassNotFoundException {
         int choice;
         do {

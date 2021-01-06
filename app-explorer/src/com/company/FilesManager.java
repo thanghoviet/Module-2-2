@@ -61,10 +61,11 @@ public class FilesManager {
     public static File[] listFilesInBaseDir() {
         return BASE_DIRECTORY.listFiles();
     }
-
     public static List<String> searchFilesInBaseDir(String keywords) {
         final String pattern = keywords.toLowerCase();
         File[] fileList = listFilesInBaseDir();
+
+
         return Stream.of(fileList)
                 .map(AppUtils::getFileNameFromFile)
                 .filter(filename -> filename.toLowerCase().contains(pattern))
