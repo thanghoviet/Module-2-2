@@ -2,7 +2,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import jdk.swing.interop.SwingInterOpUtils;
-import org.json.simple.JSONValue;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -97,8 +96,8 @@ public class StudentManager {
         String name = getStudentName();
         student.setName(name);
         System.out.println("Nhập ngày tháng năm sinh của sinh viên (yy-mm-dd):");
-        student.setBirthday(dateBirthday());
-        boolean checkk = false;
+            student.setBirthday(dateBirthday());
+            boolean checkk = false;
         do {
             System.out.println("nhập giới tính của sinh viên:");
             System.out.println("giới tính Nam:nhập 'Nam' , giới tính Nữ:nhập 'Nữ'");
